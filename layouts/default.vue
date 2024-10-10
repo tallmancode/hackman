@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import secBg from './sec-bg.jpg';
+</script>
 
 <template>
-    <div id="layout" class="w-screen h-screen">
+    <div id="layout" class="w-screen h-screen" :style="{backgroundImage: `url(${secBg})`}">
         <slot></slot>
     </div>
 </template>
@@ -16,7 +18,7 @@
     }
 }
 #layout{
-    background-image: url("./sec-bg.jpg");
+
     background-position: center;
     background-size: 100%;
     animation: animatedBackground 10s linear infinite alternate;
