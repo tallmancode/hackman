@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import secBg from './sec-bg.jpg';
+import secBg from './public/sec-bg.jpg';
 </script>
 
 <template>
