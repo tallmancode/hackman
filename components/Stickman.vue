@@ -11,6 +11,11 @@ onMounted(() => {
     ctx.strokeStyle = "white";
 })
 
+const reset = () => {
+    const ctx = canvas.value.getContext('2d')
+    ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
+}
+
 const draw = ($pathFromx, $pathFromy, $pathTox, $pathToy) => {
     const rect = canvas.value.getBoundingClientRect()
     const ctx = canvas.value.getContext('2d')
@@ -70,7 +75,8 @@ const animate = (index) => {
 }
 
 defineExpose({
-    animate
+    animate,
+    reset
 })
 
 </script>

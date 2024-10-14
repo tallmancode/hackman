@@ -3,10 +3,15 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   css: ["@/assets/style.css"],
   devtools: { enabled: true },
-  modules: ["@nuxt/ui"],
+  modules: ["@nuxt/ui", '@pinia/nuxt'],
   ssr: false,
   app: {
     pageTransition: {name: 'page', mode: 'out-in'},
     layoutTransition: {name: 'page', mode: 'out-in'},
+  },
+  runtimeConfig: {
+    public: {
+      baseUrl: 'http://hackman.tallmancode.co.za'
+    }
   }
 })
