@@ -173,7 +173,7 @@ const restart = () => {
                 </div>
             </div>
         </template>
-        <div class="fixed flex justify-center items-center z-20 top-0 bottom-0 left-0 right-0 bg-neutral-800/80"
+        <div class="fixed flex justify-center items-center z-20 top-0 bottom-0 left-0 right-0 bg-neutral-800/80 text-light-50"
              v-if="showLifeLost">
             <div class="flex flex-col items-center justify-center">
                 <h1 class="text-4xl" v-if="userStore.lives > 0">You lost a life!</h1>
