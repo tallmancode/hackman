@@ -27,7 +27,7 @@ const countdown = () => {
 
 const startNewGame = () => {
     clearInterval(timer.value)
-    time.value = 4
+    time.value = 3
     timer.value = setInterval(countdown, 1000);
     countdown();
 }

@@ -25,7 +25,7 @@ onMounted(() => {
 const stickman = ref()
 const guessesLeft = ref(10);
 const correct = ref(0)
-const countdownTimer = ref()
+const countdown = ref()
 
 
 const handlePick = (char) => {
@@ -141,14 +141,14 @@ const handleStart = () => {
 const restart = () => {
     gameStarted.value = false
     showLifeLost.value = false
-    countdownTimer.value.startNewGame()
+    countdown.value.startNewGame()
 }
 
 </script>
 
 <template>
     <div class="w-full flex flex-col h-full">
-        <countdown ref="countdownTimer" @start-game="handleStart" v-show="!gameStarted && userStore.user"/>
+        <countdown ref="countdown" @start-game="handleStart" v-if="!gameStarted && userStore.user"/>
         <template v-if="gameStarted">
             <Timer></Timer>
             <div class="w-full flex flex-col items-center">

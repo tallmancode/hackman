@@ -6,8 +6,7 @@ export const useUser = defineStore("user",{
         user: undefined,
         lives: undefined,
         level: undefined,
-        gameId: undefined,
-        gameStart: undefined
+        gameId: undefined
     }),
     actions: {
         setLives(lives){

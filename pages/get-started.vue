@@ -2,9 +2,11 @@
 import api from "~/utils/api/api";
 import {useUser} from "~/store/user";
 import {useWords} from "~/store/words";
+import useVuelidate from "@vuelidate/core";
+import {helpers, required, email} from "@vuelidate/validators";
 
 const state = ref({
-    email: undefined,
+    email: '',
     firstName: undefined,
     lastName: undefined,
     office: undefined
@@ -13,6 +15,23 @@ const state = ref({
 onMounted(() => {
     getWords()
 })
+
+const form = useVuelidate({
+    email: {
+        required, email
+    },
+    firstName: {
+        required
+    },
+    lastName: {
+        required
+    },
+    office: {
+        required
+    }
+}, state)
+
+
 
 
 const wordsStore = useWords();
@@ -34,8 +53,15 @@ const officeOptions = [
 const submitLoading = ref(false)
 const userStore = useUser();
 const router = useRouter();
+const formError = ref(false)
 const handleSubmit = () => {
     submitLoading.value = true
+    form.value.$validate();
+    formError.value = false
+    if(form.value.$error){
+        submitLoading.value = false
+        return
+    }
     api({
         url: '/api/play',
         options: {
@@ -47,7 +73,7 @@ const handleSubmit = () => {
         router.push('/hackman')
         })
         .catch((error) => {
-
+            formError.value = 'An error has occured. Please try again.'
         })
         .finally(() => {
             submitLoading.value = false
@@ -106,26 +132,37 @@ const getWords = () => {
             </div>
             <div class="w-full flex flex-col items-center justify-center">
                 <h1 class="uppercase text-2xl mb-4">Enter You Details</h1>
-                <UForm :state="state" class="space-y-4 text-white max-w-[400px] w-full" @submit="handleSubmit">
-                    <UFormGroup label="First Name" name="first-name" class="text-white"
+
+                <UForm ref="formElem" :state="state" class="space-y-4 text-white max-w-[400px] w-full" @submit="handleSubmit">
+                    <UAlert
+                        v-if="formError"
+                        color="primary"
+                        variant="solid"
+                        :title="formError"
+                    />
+                    <UFormGroup label="First Name" name="first-name" class="text-white" :error="form.firstName.$errors[0]?.$message"
                                 :ui="{label: {base: 'text-white'}}">
-                        <UInput v-model="state.firstName" color="light" variant="outline"
+                        <UInput v-model="state.firstName" color="light" variant="outline" @blur="form.firstName.$validate()"
                                 :ui="{variant:{outline: 'text-white'}}"/>
                     </UFormGroup>
-                    <UFormGroup label="Last Name" name="last-name" :ui="{label: {base: 'text-white'}}">
+                    <UFormGroup label="Last Name" name="last-name" :ui="{label: {base: 'text-white'}}" :error="form.lastName.$errors[0]?.$message">
                         <UInput v-model="state.lastName" variant="outline" color="light"
                                 :ui="{variant:{outline: 'text-white'}}"/>
                     </UFormGroup>
-                    <UFormGroup label="Email" name="email" :ui="{label: {base: 'text-white'}}">
-                        <UInput v-model="state.email" type="email" variant="outline" color="light"
+                    <UFormGroup label="Email" name="email" :ui="{label: {base: 'text-white'}}" :error="form.email.$errors[0]?.$message">
+                        <UInput v-model="state.email" type="email" variant="outline" color="light" e
                                 :ui="{variant:{outline: 'text-white'}}"/>
                     </UFormGroup>
-                    <UFormGroup label="Select Office" :ui="{label: {base: 'text-white'}}">
+                    <UFormGroup label="Select Office" :ui="{label: {base: 'text-white'}}" :error="form.office.$errors[0]?.$message">
                         <USelectMenu v-model="state.office" option-attribute="name" :options="officeOptions"
                                      variant="outline" color="light" placeholder="-- Select --"
                                      :ui="{variant:{outline: 'text-white'}}"/>
                     </UFormGroup>
-                    <UButton label="Get Hacking" size="lg" type="submit" :loading="submitLoading"></UButton>
+                    <div class="flex justify-between">
+                        <UButton label="Get Hacking" size="lg" type="submit" :loading="submitLoading"></UButton>
+                        <UButton label="Leaderboard" size="lg" type="button"  @click="router.push('/leaders')"></UButton>
+                    </div>
+
                 </UForm>
             </div>
         </div>

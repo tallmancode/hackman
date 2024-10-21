@@ -1,18 +1,13 @@
 <script setup lang="ts">
-import {useUser} from "~/store/user";
-
 const time = ref('00:00:00')
 
 const started = ref(false)
 const timeBegan = ref(null);
 const running = ref(false)
-const userStore = useUser();
 function start() {
     if(running.value) return;
-    if (!userStore.gameStart) {
+    if (timeBegan.value === null) {
         timeBegan.value = new Date();
-    }else{
-        timeBegan.value = new Date(userStore.gameStart);
     }
     started.value = setInterval(clockRunning, 10);
     running.value = true;
