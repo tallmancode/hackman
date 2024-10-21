@@ -25,6 +25,7 @@ onMounted(() => {
 const stickman = ref()
 const guessesLeft = ref(10);
 const correct = ref(0)
+const showComplete = ref(false)
 const countdownTimer = ref()
 
 
@@ -80,7 +81,9 @@ const endGame = () => {
             level: userStore.level
         }
     }).then((resp) => {
-
+        if(userStore.level === 3 && userStore.lives > 0){
+            showComplete.value = true
+        }
     })
 }
 
@@ -100,7 +103,6 @@ const levelUp = () => {
 const showLifeLost = ref(false)
 
 const handleLooseLife = () => {
-
     showLifeLost.value = true
     api({
         url: '/api/lost',
@@ -179,8 +181,18 @@ const restart = () => {
                 <h1 class="text-4xl" v-if="userStore.lives > 0">You lost a life!</h1>
                 <template v-else>
                     <h1 class="text-4xl mb-4">You're Dead!</h1>
-                    <UButton label="Start new game" @click="restart"/>
+                    <div class="flex justify-between space-x-4">
+                        <UButton label="Start new game" @click="restart"/>  <UButton label="Leaderboard" @click="router.push('/leaders')"/>
+                    </div>
+
                 </template>
+            </div>
+        </div>
+        <div class="fixed flex justify-center items-center z-20 top-0 bottom-0 left-0 right-0 bg-neutral-800/80 text-light-50"
+             v-if="showComplete">
+            <div class="flex flex-col items-center justify-center">
+                <h1 class="text-4xl">Well done! You're a Hacker!</h1>
+                <UButton label="Leaderboard" @click="router.push('/leaders')"/>
             </div>
         </div>
     </div>
