@@ -42,7 +42,6 @@ const api = <T>({ url, options, data }: InternalFetch): Promise<T> => {
 	};
 
 	const baseURL = config.public.baseUrl;
-	console.log(baseURL, url)
 	return new Promise<T>((resolve, reject) => {
 		fetch(baseURL+url, {
 			...options,

@@ -9,7 +9,6 @@ onMounted(() => {
             method: 'GET'
         }
     }).then((resp) => {
-        console.log(resp)
         leaders.value = resp
     })
         .catch((error) => {

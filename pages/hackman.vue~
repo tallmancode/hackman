@@ -182,7 +182,7 @@ const restart = () => {
                 <template v-else>
                     <h1 class="text-4xl mb-4">You're Dead!</h1>
                     <div class="flex justify-between space-x-4">
-                        <UButton label="Start new game" @click="restart"/>  <UButton label="Start new game" @click="router.push('/leaders')"/>
+                        <UButton label="Start new game" @click="restart"/>  <UButton label="Leaderboard" @click="router.push('/leaders')"/>
                     </div>
 
                 </template>

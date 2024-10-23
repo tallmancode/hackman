@@ -46,8 +46,6 @@ const handlePick = (char) => {
         if (currentWord.value.word.length === correct.value) {
             handleWin()
         }
-
-        console.log(correct.value, currentWord.value.word.length)
     }
 }
 
@@ -62,7 +60,6 @@ const handleWin = () => {
         correct.value = 0
         usedCharacters.value = []
         currentWord.value = wordsStore.getWordForLevel(userStore.level)
-        console.log(currentWord.value)
         levelUp()
 
     }
