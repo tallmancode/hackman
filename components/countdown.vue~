@@ -44,7 +44,7 @@ const handleBegin = () => {
         },
         data: {
             firstName: userStore.user.firstName,
-            lastName: userStore.user.lastNameName
+            lastName: userStore.user.lastName
         }
     }).then((resp) => {
         userStore.level = resp.level

@@ -3,9 +3,10 @@ import api from "~/utils/api/api";
 import {useUser} from "~/store/user";
 import {useWords} from "~/store/words";
 import useVuelidate from "@vuelidate/core";
-import {helpers, required} from "@vuelidate/validators";
+import {helpers, required, email} from "@vuelidate/validators";
 
 const state = ref({
+    email: '',
     firstName: undefined,
     lastName: undefined,
     office: undefined
@@ -16,6 +17,9 @@ onMounted(() => {
 })
 
 const form = useVuelidate({
+    email: {
+        required, email
+    },
     firstName: {
         required
     },
@@ -139,6 +143,10 @@ const getWords = () => {
                     </UFormGroup>
                     <UFormGroup label="Last Name" name="last-name" :ui="{label: {base: 'text-white'}}" :error="form.lastName.$errors[0]?.$message">
                         <UInput v-model="state.lastName" variant="outline" color="light"
+                                :ui="{variant:{outline: 'text-white'}}"/>
+                    </UFormGroup>
+                    <UFormGroup label="Email" name="email" :ui="{label: {base: 'text-white'}}" :error="form.email.$errors[0]?.$message">
+                        <UInput v-model="state.email" type="email" variant="outline" color="light" e
                                 :ui="{variant:{outline: 'text-white'}}"/>
                     </UFormGroup>
                     <UFormGroup label="Select Office" :ui="{label: {base: 'text-white'}}" :error="form.office.$errors[0]?.$message">

@@ -117,8 +117,7 @@ const handleLooseLife = () => {
             method: 'POST'
         },
         data: {
-            firstName: userStore.user.firstName,
-            lastName: userStore.user.lastName
+            email: userStore.user.email,
         }
     }).then((resp) => {
         userStore.lives = resp.lives
