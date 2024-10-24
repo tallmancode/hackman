@@ -50,7 +50,7 @@ function getTimeDifferenceInSeconds(start, end) {
             </div>
             <div v-for="(leader, index) in leaders" class="grid grid-cols-6 w-[750px] text-lg">
                 <div>{{ index + 1 }}</div>
-                <div class="overflow-hidden">{{leader.User.firstName}} {{leader.User.lastName}}</div>
+                <div class="overflow-hidden truncate">{{leader.User.firstName}} {{leader.User.lastName}}</div>
                 <div>{{formatString(leader.User.office)}}</div>
                 <div>
                     {{getTimeDifferenceInSeconds(leader.start, leader.end)}} sec
