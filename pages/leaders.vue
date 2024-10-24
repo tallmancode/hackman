@@ -40,7 +40,7 @@ function getTimeDifferenceInSeconds(start, end) {
     <div class="h-full w-full bg-neutral-800/70 text-white ">
         <div class="flex flex-col container w-full mx-auto h-full items-center justify-center text-center">
             <h1 class="text-4xl mb-4">Leaderboard</h1>
-            <div class="grid grid-cols-6 min-w-[750px] text-pink-500 text-xl font-bold">
+            <div class="grid grid-cols-6 w-[750px] text-pink-500 text-xl font-bold">
                 <div></div>
                 <div>Player</div>
                 <div>Office</div>
@@ -48,7 +48,7 @@ function getTimeDifferenceInSeconds(start, end) {
                 <div>Level</div>
                 <div>Lives left</div>
             </div>
-            <div v-for="(leader, index) in leaders" class="grid grid-cols-6 min-w-[750px] text-lg">
+            <div v-for="(leader, index) in leaders" class="grid grid-cols-6 w-[750px] text-lg">
                 <div>{{ index + 1 }}</div>
                 <div class="overflow-hidden">{{leader.User.firstName}} {{leader.User.lastName}}</div>
                 <div>{{formatString(leader.User.office)}}</div>
