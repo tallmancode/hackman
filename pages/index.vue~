@@ -14,8 +14,8 @@ const loading = ref(false)
         <h1 class="uppercase text-2xl font-bold">Welcome to</h1>
         <h1 class="uppercase text-5xl font-bold">hackman</h1>
         <div class="mt-4">
-            <UButton label="Play Now" size="lg" :disabled="loading" :loading="loading" @click="() => {
-                loading = true
+            <UButton label="Play Now" size="lg" :disabled="loading" @click="() => {
+                loading.value = true
                 router.push('/get-started')
             }"></UButton>
         </div>

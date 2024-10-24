@@ -15,5 +15,5 @@
 }
 
 button{
- color: #fff!important;
+  @apply text-light-50;
 }

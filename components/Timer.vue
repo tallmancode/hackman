@@ -18,6 +18,12 @@ function start() {
     running.value = true;
 }
 
+function stop() {
+    clearInterval(started.value);
+}
+
+defineExpose({stop})
+
 function zeroPrefix(num, digit) {
     var zero = '';
     for(var i = 0; i < digit; i++) {

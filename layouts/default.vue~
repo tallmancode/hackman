@@ -3,9 +3,11 @@ import secBg from './public/sec-bg.webp';
 </script>
 
 <template>
+    <NuxtErrorBoundary>
     <div id="layout" class="w-screen h-screen bg-cover" :style="{backgroundImage: `url(${secBg})`}">
         <slot></slot>
     </div>
+    </NuxtErrorBoundary>
 </template>
 
 <style scoped>

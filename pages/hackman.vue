@@ -18,8 +18,6 @@ onMounted(() => {
     if (!userStore.user) {
         router.push('/get-started')
     }
-    const word = wordsStore.getWordForLevel(userStore.level)
-    currentWord.value = word
 })
 
 const stickman = ref()
@@ -27,9 +25,17 @@ const guessesLeft = ref(10);
 const correct = ref(0)
 const showComplete = ref(false)
 const countdownTimer = ref()
+const timer = ref()
+
+const handleStop = () => {
+    if(timer.value){
+        timer.value.stop()
+    }
+}
 
 
 const handlePick = (char) => {
+    if(showLifeLost.value) return
     usedCharacters.value.push(char)
     if (currentWord.value.word.indexOf(char) === -1) {
         guessesLeft.value -= 1
@@ -61,12 +67,12 @@ const handleWin = () => {
         usedCharacters.value = []
         currentWord.value = wordsStore.getWordForLevel(userStore.level)
         levelUp()
-
     }
 
 }
 
 const endGame = () => {
+    handleStop();
     api({
         url: '/api/game-ended',
         options: {
@@ -81,6 +87,8 @@ const endGame = () => {
         if(userStore.level === 3 && userStore.lives > 0){
             showComplete.value = true
         }
+    }).catch(() => {
+        showError({statusCode: 500, statusMessage: 'Error'})
     })
 }
 
@@ -94,6 +102,8 @@ const levelUp = () => {
             gameId: userStore.gameId,
             level: userStore.level
         }
+    }).catch(() => {
+        showError({statusCode: 500, statusMessage: 'Error'})
     })
 }
 
@@ -107,22 +117,29 @@ const handleLooseLife = () => {
             method: 'POST'
         },
         data: {
-            user: userStore.user.email
+            firstName: userStore.user.firstName,
+            lastName: userStore.user.lastName
         }
     }).then((resp) => {
         userStore.lives = resp.lives
         guessesLeft.value = 10
-        stickman.value.reset()
+        correct.value = 0
         usedCharacters.value = []
+        stickman.value.reset()
+
     })
         .catch((error) => {
-            console.log(error)
+            showError({statusCode: 500, statusMessage: 'Error'})
         })
         .finally(() => {
             if (userStore.lives > 0) {
-                showLifeLost.value = false
-            }
+                setTimeout(() => {
+                    showLifeLost.value = false
+                }, 2000)
 
+            }else {
+                handleStop()
+            }
         })
 }
 
@@ -149,7 +166,7 @@ const restart = () => {
     <div class="w-full flex flex-col h-full">
         <countdown ref="countdownTimer" @start-game="handleStart" v-show="!gameStarted && userStore.user"/>
         <template v-if="gameStarted">
-            <Timer></Timer>
+            <Timer ref="timer"></Timer>
             <div class="w-full flex flex-col items-center">
                 <WordContainer v-if="currentWord" :used-characters="usedCharacters"
                                :current-word="currentWord.word"/>
@@ -188,7 +205,7 @@ const restart = () => {
         <div class="fixed flex justify-center items-center z-20 top-0 bottom-0 left-0 right-0 bg-neutral-800/80 text-light-50"
              v-if="showComplete">
             <div class="flex flex-col items-center justify-center">
-                <h1 class="text-4xl">Well done! You're a Hacker!</h1>
+                <h1 class="text-4xl mb-4">Well done! You're a Hacker!</h1>
                 <UButton label="Leaderboard" @click="router.push('/leaders')"/>
             </div>
         </div>

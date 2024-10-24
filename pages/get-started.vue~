@@ -3,7 +3,7 @@ import api from "~/utils/api/api";
 import {useUser} from "~/store/user";
 import {useWords} from "~/store/words";
 import useVuelidate from "@vuelidate/core";
-import {helpers, required} from "@vuelidate/validators";
+import {helpers, required, email} from "@vuelidate/validators";
 
 const state = ref({
     firstName: undefined,

@@ -13,5 +13,10 @@ export default defineNuxtConfig({
     public: {
       baseUrl: 'http://127.0.0.1:8000'
     }
+  },
+  vite: {
+    build: {
+      target: ["es2018"]
+    }
   }
 })

@@ -43,7 +43,8 @@ const handleBegin = () => {
             method: 'POST'
         },
         data: {
-            user: userStore.user.email
+            firstName: userStore.user.firstName,
+            lastName: userStore.user.lastName
         }
     }).then((resp) => {
         userStore.level = resp.level
@@ -53,7 +54,7 @@ const handleBegin = () => {
         emit('startGame',resp.start )
     })
         .catch((error) => {
-
+            showError({statusCode: 500, statusMessage: 'Error'})
         })
         .finally(() => {
         })

@@ -1,6 +1,13 @@
 export default defineAppConfig({
     ui: {
         primary: 'red',
-        light: 'light'
+        light: 'light',
+        button: {
+            default: {
+                size: 'md',
+                color: 'gray',
+                variant: 'ghost'
+            }
+        }
     }
 })

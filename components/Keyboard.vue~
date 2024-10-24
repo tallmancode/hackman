@@ -3,14 +3,14 @@ var alphabet = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'a', 'b', 'c',
     'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
     't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
-const props = defineProps<{usedCharacters: string[]}>()
+defineProps<{usedCharacters: string[]}>()
 
 const emit = defineEmits<{
     (event: 'selectChar', value: string): void
 }>()
 
 const handleKeyPress = (event) => {
-    if (alphabet.includes(event.key) && !props.usedCharacters.includes(event.key)) {
+    if (alphabet.includes(event.key) && !usedCharacters.includes(event.key)) {
         emit('selectChar', event.key)
     }
 }

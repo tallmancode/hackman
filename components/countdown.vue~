@@ -27,7 +27,7 @@ const countdown = () => {
 
 const startNewGame = () => {
     clearInterval(timer.value)
-    time.value = 3
+    time.value = 4
     timer.value = setInterval(countdown, 1000);
     countdown();
 }
@@ -43,7 +43,8 @@ const handleBegin = () => {
             method: 'POST'
         },
         data: {
-            user: userStore.user.email
+            firstName: userStore.user.firstName,
+            lastName: userStore.user.lastNameName
         }
     }).then((resp) => {
         userStore.level = resp.level
@@ -53,7 +54,7 @@ const handleBegin = () => {
         emit('startGame',resp.start )
     })
         .catch((error) => {
-
+            showError({statusCode: 500, statusMessage: 'Error'})
         })
         .finally(() => {
         })
