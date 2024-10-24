@@ -154,6 +154,7 @@ const getWords = () => {
                                      variant="outline" color="light" placeholder="-- Select --"
                                      :ui="{variant:{outline: 'text-white'}}"/>
                     </UFormGroup>
+                    <div class="text-xs">* Only valid Raging River and Osiris Trading emails will be considered for prizes.</div>
                     <div class="flex justify-between">
                         <UButton label="Get Hacking" size="lg" type="submit" :loading="submitLoading"></UButton>
                         <UButton label="Leaderboard" size="lg" type="button"  @click="router.push('/leaders')"></UButton>
