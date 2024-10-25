@@ -12,10 +12,11 @@ const wordsStore = useWords();
 const gameStarted = ref()
 const currentWord = ref()
 const usedCharacters = ref([])
+const config = useRuntimeConfig().public
 
 
 onMounted(() => {
-    if (!userStore.user) {
+    if (!userStore.user || config.finished) {
         router.push('/get-started')
     }
 })
@@ -32,7 +33,6 @@ const handleStop = () => {
         timer.value.stop()
     }
 }
-
 
 const handlePick = (char) => {
     if(showLifeLost.value) return
@@ -54,7 +54,6 @@ const handlePick = (char) => {
         }
     }
 }
-
 
 const handleWin = () => {
     if (userStore.level === 3) {

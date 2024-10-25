@@ -5,6 +5,8 @@ import {useWords} from "~/store/words";
 import useVuelidate from "@vuelidate/core";
 import {helpers, required, email} from "@vuelidate/validators";
 
+const config = useRuntimeConfig().public
+
 const state = ref({
     email: '',
     firstName: undefined,
@@ -126,9 +128,14 @@ const getWords = () => {
                     </div>
                 </div>
             </div>
-            <div class="w-full flex flex-col items-center justify-center">
+            <div class="w-full flex flex-col items-center justify-center" v-if="config.finished">
+                <h1 class="text-4xl">Hackman Is Finished</h1>
+                <div class="flex justify-center">
+                    <UButton label="Leaderboard" size="lg" type="button"  @click="router.push('/leaders')" ></UButton>
+                </div>
+            </div>
+            <div class="w-full flex flex-col items-center justify-center" v-else>
                 <h1 class="uppercase text-2xl mb-4">Enter You Details</h1>
-
                 <UForm ref="formElem" :state="state" class="space-y-4 text-white max-w-[400px] w-full" @submit="handleSubmit">
                     <UAlert
                         v-if="formError"
@@ -139,31 +146,30 @@ const getWords = () => {
                     <UFormGroup label="First Name" name="first-name" class="text-white" :error="form.firstName.$errors[0]?.$message"
                                 :ui="{label: {base: 'text-white'}}">
                         <UInput v-model="state.firstName" color="light" variant="outline" @blur="form.firstName.$validate()"
-                                :ui="{variant:{outline: 'text-white'}}"/>
+                                :ui="{variant:{outline: 'text-white'}}" :disabled="config.finished"/>
                     </UFormGroup>
                     <UFormGroup label="Last Name" name="last-name" :ui="{label: {base: 'text-white'}}" :error="form.lastName.$errors[0]?.$message">
                         <UInput v-model="state.lastName" variant="outline" color="light"
-                                :ui="{variant:{outline: 'text-white'}}"/>
+                                :ui="{variant:{outline: 'text-white'}}" :disabled="config.finished"/>
                     </UFormGroup>
                     <UFormGroup label="Email" name="email" :ui="{label: {base: 'text-white'}}" :error="form.email.$errors[0]?.$message">
                         <UInput v-model="state.email" type="email" variant="outline" color="light" e
-                                :ui="{variant:{outline: 'text-white'}}"/>
+                                :ui="{variant:{outline: 'text-white'}}" :disabled="config.finished"/>
                     </UFormGroup>
                     <UFormGroup label="Select Office" :ui="{label: {base: 'text-white'}}" :error="form.office.$errors[0]?.$message">
                         <USelectMenu v-model="state.office" option-attribute="name" :options="officeOptions"
                                      variant="outline" color="light" placeholder="-- Select --"
-                                     :ui="{variant:{outline: 'text-white'}}"/>
+                                     :ui="{variant:{outline: 'text-white'}}" :disabled="config.finished"/>
                     </UFormGroup>
-                    <div>* Only valid Raging River and Osiris Trading emails will be considered for prizes.</div>
+                    <div class="text-xs">* Only valid Raging River and Osiris Trading emails will be considered for prizes.</div>
                     <div class="flex justify-between">
-                        <UButton label="Get Hacking" size="lg" type="submit" :loading="submitLoading"></UButton>
-                        <UButton label="Leaderboard" size="lg" type="button"  @click="router.push('/leaders')"></UButton>
+                        <UButton label="Get Hacking" size="lg" type="submit" :loading="submitLoading" :disabled="config.finished"></UButton>
+                        <UButton label="Leaderboard" size="lg" type="button"  @click="router.push('/leaders')" ></UButton>
                     </div>
-
                 </UForm>
             </div>
-        </div>
 
+        </div>
     </div>
 </template>
 
