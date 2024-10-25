@@ -60,6 +60,9 @@ const handleSubmit = () => {
     submitLoading.value = true
     form.value.$validate();
     formError.value = false
+    if(state.value.firstName === 'Ian' || state.value.lastName === 'van den Berg'){
+        formError.value = "Stop it Ian!"
+    }
     if(form.value.$error){
         submitLoading.value = false
         return
