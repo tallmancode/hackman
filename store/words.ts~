@@ -8,11 +8,8 @@ export const useWords = defineStore("words",{
     actions: {
         getWordForLevel(level){
             if( !this.words) return undefined
-            // const words = this.words.filter(word => word.level === level)
+            const words = this.words.filter(word => word.level === level)
 
-            const words = this.words.filter(word => word.word === '123456 ')
-
-            console.log(words)
             const random = Math.floor(Math.random() * words.length);
             const word = words[random]
             if(word){

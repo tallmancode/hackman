@@ -82,18 +82,18 @@ const handleSubmit = () => {
         })
 }
 
-const getWords = () => {
-    api({
-        url: '/api/words',
-            options: {
-            method: 'GET'
-        },
-    }).then((resp) => {
-        wordsStore.words = resp
-    }).catch(() => {
-        showError({statusCode: 500, statusMessage: 'Page Not Found'})
-    })
-}
+// const getWords = () => {
+//     api({
+//         url: '/api/words',
+//             options: {
+//             method: 'GET'
+//         },
+//     }).then((resp) => {
+//         wordsStore.words = resp
+//     }).catch(() => {
+//         showError({statusCode: 500, statusMessage: 'Page Not Found'})
+//     })
+// }
 
 
 </script>
@@ -129,7 +129,7 @@ const getWords = () => {
                 </div>
             </div>
             <div class="w-full flex flex-col items-center justify-center" v-if="config.finished">
-                <h1 class="text-4xl">Hackman Is Finished</h1>
+                <h1 class="text-4xl mb-4">Hackman Is Finished</h1>
                 <div class="flex justify-center">
                     <UButton label="Leaderboard" size="lg" type="button"  @click="router.push('/leaders')" ></UButton>
                 </div>

@@ -14,9 +14,9 @@ const state = ref({
     office: undefined
 })
 
-onMounted(() => {
-    getWords()
-})
+// onMounted(() => {
+//     getWords()
+// })
 
 const form = useVuelidate({
     email: {
@@ -82,18 +82,18 @@ const handleSubmit = () => {
         })
 }
 
-const getWords = () => {
-    api({
-        url: '/api/words',
-            options: {
-            method: 'GET'
-        },
-    }).then((resp) => {
-        wordsStore.words = resp
-    }).catch(() => {
-        showError({statusCode: 500, statusMessage: 'Page Not Found'})
-    })
-}
+// const getWords = () => {
+//     api({
+//         url: '/api/words',
+//             options: {
+//             method: 'GET'
+//         },
+//     }).then((resp) => {
+//         wordsStore.words = resp
+//     }).catch(() => {
+//         showError({statusCode: 500, statusMessage: 'Page Not Found'})
+//     })
+// }
 
 
 </script>
