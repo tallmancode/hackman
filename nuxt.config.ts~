@@ -12,7 +12,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       baseUrl: 'https://hackman.tallmancode.co.za',
-      finished: true
+      finished: false
     }
   },
   vite: {
