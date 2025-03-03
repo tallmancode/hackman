@@ -11,8 +11,8 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      baseUrl: 'https://hackman.tallmancode.co.za',
-      finished: true
+      baseUrl: 'http://127.0.0.1:8000',
+      finished: false
     }
   },
   vite: {
