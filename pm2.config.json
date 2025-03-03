@@ -3,10 +3,10 @@
     {
       "name": "hackman-client",
       "script" : "./.output/server/index.mjs",
-      "env": {
+      "env_production": {
         "NODE_ENV": "production",
         "PORT": 5666,
-        "BASE_URL": "https://hackman-server.tallmancode.co.za",
+        "NUXT_PUBLIC_BASE_URL": "https://hackman-server.tallmancode.co.za",
         "NUXT_PUBLIC_SAFE_MODE": "false",
         "NUXT_PUBLIC_GRAPH_URL": "https://naught-api.tallmancode.co.za/api/graphql",
         "NUXT_PUBLIC_POSTER_DOMAIN": "https://naught-api.tallmancode.co.za/img",
