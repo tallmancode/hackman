@@ -1,0 +1,36 @@
+name: Build and Deploy
+on:
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v2
+            -   name: Set up Node.js
+                uses: actions/setup-node@v1
+                with:
+                    node-version: '18'
+            -   name: Install Dependencies
+                run: npm install
+            -   name: Build
+                run: npm run build
+            -   name: Archive Production Artifacts
+                run: tar -czvf output.tar.gz ./.output
+            -   name: Setup SSH Agent
+                uses: webfactory/ssh-agent@v0.5.2
+                with:
+                    ssh-private-key: ${{ secrets.SSH_KEY }}
+            -   name: Transfer Build Artifacts
+                run: scp -o StrictHostKeyChecking=no output.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/www/wwwroot/hackman.tallmancode.co.za
+            -   name: Deploy to Server
+                run: |
+                    ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} "
+                      cd /www/wwwroot/hackman.tallmancode.co.za
+                      rm -R .output
+                      tar -xzvf output.tar.gz -C /www/wwwroot/hackman.tallmancode.co.za
+                      rm output.tar.gz
+                      pm2 restart hackman-client --update-env
+                    "
