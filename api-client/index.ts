@@ -57,7 +57,7 @@ const apiGamedieHashPut = (
  */
 const gameLevelup = (
     hash: string,
-    gameLevelupBody: GameJsonldGameWrite | GameGameWrite,
+    gameLevelupBody: any,
  ) => {
       return customAxios<GameJsonldGameRead | GameGameRead>(
       {url: `/api/game/levelup/${hash}`, method: 'PUT',

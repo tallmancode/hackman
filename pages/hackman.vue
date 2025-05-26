@@ -7,6 +7,9 @@ import decrypt from '~/utils/decrypt'
 import {useWords} from "~/store/words";
 // import api from "~/utils/api/api";
 import {getHackmanApi} from "~/api-client";
+import {setCookies} from "~/composables/useAuth";
+import type {AxiosError} from "axios";
+
 const router = useRouter();
 const gameStarted = ref()
 const currentWord = ref()
@@ -74,26 +77,39 @@ const endGame = () => {
 }
 
 const levelUp = async () => {
-    const resp = await api.gameLevelup(gameID.value, {})
+    try {
+        const resp = await api.gameLevelup(gameID.value, {
+            wordId: currentWord.value['@id'],
+            answer: currentWord.value.word
+        })
 
-    if(resp.endDateTime){
-        if (timer.value) {
-            timer.value.stop()
+        if (resp.endDateTime) {
+            if (timer.value) {
+                timer.value.stop()
+            }
+            showComplete.value = true
         }
-        showComplete.value = true
-    }
-    guessesLeft.value = 10
-    lives.value = resp.lives
-    correct.value = 0
-    usedCharacters.value = []
-    stickman.value.reset()
-    const maxLevel = Math.max(...resp.gameLevels.map(gl => gl.word.level))
+        guessesLeft.value = 10
+        lives.value = resp.lives
+        correct.value = 0
+        usedCharacters.value = []
+        stickman.value.reset()
+        const maxLevel = Math.max(...resp.gameLevels.map(gl => gl.word.level))
 
-    const highestLevel = resp.gameLevels.find(gl => gl.word.level === maxLevel)
-    const decypt = decrypt('encryptionkey', highestLevel.word.word)
-    highestLevel.word.word = decypt
-    currentWord.value = highestLevel.word
-    level.value = highestLevel.word.level
+        const highestLevel = resp.gameLevels.find(gl => gl.word.level === maxLevel)
+        const decypt = decrypt('encryptionkey', highestLevel.word.word)
+        highestLevel.word.word = decypt
+        currentWord.value = highestLevel.word
+        level.value = highestLevel.word.level
+    } catch (err: AxiosError) {
+        if (err?.response?.status === 400) {
+            setCookies(undefined, undefined)
+            router.push('/login')
+        }
+        return
+    }
+
+
 }
 
 const showLifeLost = ref(false)
@@ -101,7 +117,7 @@ const showLifeLost = ref(false)
 const handleLooseLife = async () => {
     showLifeLost.value = true
     const resp = await api.apiGamedieHashPut(gameID.value, {})
-    if(resp.lives === 0){
+    if (resp.lives === 0) {
         lives.value = resp.lives
         handleStop()
         return
