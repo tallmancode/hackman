@@ -18,7 +18,6 @@ import secBg from './public/sec-bg.webp';
     }
 }
 #layout{
-
     background-position: center;
     background-size: 100%;
     animation: animatedBackground 10s linear infinite alternate;

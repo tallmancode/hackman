@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import api from "~/utils/api/api";
+
 import {useUser} from "~/store/user";
 
 const time = ref(3)
@@ -21,7 +21,7 @@ const countdown = () => {
     time.value = time.value - 1
     if (time.value === 0) {
         clearInterval(timer.value)
-        handleBegin()
+        emit('startGame' )
     }
 }
 
@@ -35,29 +35,29 @@ const startNewGame = () => {
 defineExpose({startNewGame})
 
 
-const handleBegin = () => {
-    if(!userStore.user) return
-    api({
-        url: '/api/start',
-        options: {
-            method: 'POST'
-        },
-        data: {
-            email: userStore.user.email
-        }
-    }).then((resp) => {
-        userStore.level = resp.level
-        userStore.lives = resp.lives
-        userStore.gameId = resp.gameId
-        userStore.gameStart = resp.start
-        emit('startGame',resp.start )
-    })
-        .catch((error) => {
-            showError({statusCode: 500, statusMessage: 'Error'})
-        })
-        .finally(() => {
-        })
-}
+// const handleBegin = () => {
+//     if(!userStore.user) return
+//     api({
+//         url: '/api/start',
+//         options: {
+//             method: 'POST'
+//         },
+//         data: {
+//             email: userStore.user.email
+//         }
+//     }).then((resp) => {
+//         userStore.level = resp.level
+//         userStore.lives = resp.lives
+//         userStore.gameId = resp.gameId
+//         userStore.gameStart = resp.start
+//         emit('startGame',resp.start )
+//     })
+//         .catch((error) => {
+//             showError({statusCode: 500, statusMessage: 'Error'})
+//         })
+//         .finally(() => {
+//         })
+// }
 </script>
 
 <template>

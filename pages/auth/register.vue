@@ -1,32 +1,31 @@
 <script setup lang="ts">
 import type { AxiosError } from "axios";
+import {getHackmanApi} from "~/api-client";
 import UseFormError from "~/composables/UseFormError";
 
-//TODO : Validate confirm password, Global Errors
-// import {registerUser} from "~/composables/useAuth";
-
+const router = useRouter()
+const api = getHackmanApi()
 definePageMeta({
     path: "/register",
     public: true
 })
 
-const router = useRouter()
-const { $api } = useNuxtApp();
+
+const loading = ref(false)
 const formData = ref({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
-    characterName: ''
 })
 
-const loading = ref(false)
 
 const handleSubmit = async () => {
     loading.value = true
     try {
-        const resp = await $api.auth.register(formData.value);
-        if (resp.status === 200 ) {
+        const resp = await api.registerUser(formData.value)
+        // const resp = await $api.auth.register(formData.value);
+        if (resp) {
             const jwtToken = useCookie('jwtToken', {
                 maxAge: 3600, // Set the cookie to expire in 3600 seconds (1 hour)
             }); // Coo
@@ -35,13 +34,13 @@ const handleSubmit = async () => {
                 maxAge: 604800, // Set the cookie to expire in 3600 seconds (1 hour)
             });
 
-            jwtToken.value = resp.data.token;
-            refreshToken.value = resp.data.refresh_token;// Cookie for JWT
-            router.push("/");
+            jwtToken.value = resp.token;
+            refreshToken.value = resp.refresh_token;// Cookie for JWT
+            router.push("/lobby");
         }
     } catch (err: AxiosError) {
         if (err.response && err.response.status === 422) {
-           errors.value = UseFormError(err.response.data);
+            errors.value = UseFormError(err.response.data);
         }
     }
     loading.value = false
@@ -52,56 +51,73 @@ const errors = ref()
 </script>
 
 <template>
-    <div class="flex h-full w-full items-center justify-center relative">
-        <form @submit.prevent="handleSubmit()" class="flex flex-col space-y-2 relative z-10 min-w-[350px]">
-            <div class="flex justify-center">
-                <NuxtImg src="/assets/digital_dungeon_logo.png" class="max-w-[150px]"/>
+    <div class="h-full w-full bg-dark-800/70 text-white ">
+        <div class="flex container w-full mx-auto h-full items-center">
+            <div class="w-full flex flex-col items-center justify-center">
+                <div class="max-w-[400px]">
+                    <h1 class="text-center text-xl font-bold mb-8">Your mission should you choose to accept, is to hack
+                        the passwords as quickly as possible.</h1>
+                    <USeparator label="Hot To Play"/>
+                    <div class="mt-4 text-light-300">
+                        <ul class="list-disc">
+                            <li class="mb-2">
+                                You will have 3 passwords to hack.
+                            </li>
+                            <li class="mb-2">
+                                Each password will increase in difficulty
+                            </li>
+                            <li class="mb-2">
+                                You will have 3 lives to attempt cracking the passwords.
+                            </li>
+                            <li class="mb-2">
+                                You will need to attempt the hack in a single session! If you refresh your browser you
+                                will loose a life.
+                            </li>
+                            <li class="mb-2">
+                                Once you have lost all 3 lives you will not be able to attempt the hack again.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <UDivider label="Create Account"
-                      :ui="{ label: 'text-xl text-dark-800 dark:text-light-100', border: {base: 'dark:border-light-100'} }"
-                      class="mb-4 select-none"/>
-            <div v-if="typeof errors === 'object' && errors?.global" class="text-red-600">
-                {{ errors?.global }}
-            </div>
-            <div class="flex space-x-4">
-                <UFormGroup label="First Name" name="first-name" class="w-full"
-                            :error="typeof errors === 'object' && errors?.firstName">
-                    <UInput v-model="formData.firstName" placeholder="Joe" autocomplete="off"/>
-                </UFormGroup>
-                <UFormGroup label="Last Name" name="last-name" class="w-full"
-                            :error="typeof errors === 'object' && errors?.lastName">
-                    <UInput v-model="formData.lastName" placeholder="Soap" autocomplete="off"/>
-                </UFormGroup>
-            </div>
-            <UFormGroup label="Character Name" name="character-name" :error="typeof errors === 'object' && errors?.characterName">
-                <UInput v-model="formData.characterName" placeholder="Thorne Blackveil"
-                        autocomplete="off"/>
-            </UFormGroup>
-            <UFormGroup label="Email" name="email" :error="typeof errors === 'object' && errors?.email">
-                <UInput v-model="formData.email" type="email" placeholder="you@example.com" icon="i-mdi-email-outline"
-                        autocomplete="off"/>
-            </UFormGroup>
+            <!--            <div class="w-full flex flex-col items-center justify-center" v-if="config.finished">-->
+            <!--                <h1 class="text-4xl mb-4">Hackman Is Finished</h1>-->
+            <!--                <div class="flex justify-center">-->
+            <!--                    <UButton label="Leaderboard" size="lg" type="button"  @click="router.push('/leaders')" ></UButton>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <div class="flex flex-col h-full w-full items-center justify-center relative">
+                <h1 class="uppercase text-2xl mb-4">Create A Account</h1>
+                <form @submit.prevent="handleSubmit()" class="flex flex-col space-y-2 relative z-10 min-w-[350px]">
+                    <div class="flex space-x-4">
+                        <UFormField label="First Name" name="first-name" class="w-full"
+                                    :error="typeof errors === 'object' && errors?.firstName">
+                            <UInput v-model="formData.firstName" placeholder="Joe" autocomplete="off" class="w-full"/>
+                        </UFormField>
+                        <UFormField label="Last Name" name="last-name" class="w-full"
+                                    :error="typeof errors === 'object' && errors?.lastName">
+                            <UInput v-model="formData.lastName" placeholder="Soap" autocomplete="off" class="w-full"/>
+                        </UFormField>
+                    </div>
+                    <UFormField label="Email" name="email" :error="typeof errors === 'object' && errors?.email"
+                                class="w-full">
+                        <UInput v-model="formData.email" type="email" placeholder="you@example.com"
+                                icon="i-mdi-email-outline"
+                                class="w-full"
+                                autocomplete="off"/>
+                    </UFormField>
 
-            <UFormGroup label="Password" name="password" :error="typeof errors === 'object' && errors?.password">
-                <UInput v-model="formData.password" type="password" autocomplete="off"/>
-            </UFormGroup>
+                    <UFormField label="Password" name="password" :error="typeof errors === 'object' && errors?.password"
+                                class="w-full">
+                        <UInput v-model="formData.password" type="password" autocomplete="off" class="w-full"/>
+                    </UFormField>
+                    <div class="flex justify-between">
+                        <UButton label="Register" size="lg" type="submit" :loading="loading"></UButton>
+                        <UButton label="Leaderboard" size="lg" type="button"></UButton>
+                    </div>
+                </form>
+            </div>
 
-            <div class="flex justify-between">
-                <NuxtLink :to="{name: 'auth-login'}" class="text-sm text-primary-500">Already registered? Log in
-                </NuxtLink>
-            </div>
-            <UButton color="primary" size="lg" type="submit"
-                     :loading="loading"
-                     :ui="{variant: {solid: 'dark:text-light-50 text-light-50'}}"
-                     class="w-full justify-center md:w-auto">
-                Register
-            </UButton>
-        </form>
-        <div class="absolute w-full h-full">
-            <div class="h-full w-full  overflow-hidden rounded-xl">
-                <NuxtImg src="/assets/login-background.jpg" alt=""
-                         class="object-center object-cover w-full h-full"/>
-            </div>
         </div>
     </div>
 </template>

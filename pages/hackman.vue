@@ -1,24 +1,41 @@
 <script setup lang="ts">
-
+import CryptoJS from 'crypto-js'
 import WordContainer from "~/components/WordContainer.vue";
 import {useUser} from "~/store/user";
 import Countdown from "~/components/countdown.vue";
+import decrypt from '~/utils/decrypt'
 import {useWords} from "~/store/words";
-import api from "~/utils/api/api";
-
+// import api from "~/utils/api/api";
+import {getHackmanApi} from "~/api-client";
 const router = useRouter();
-const userStore = useUser();
-const wordsStore = useWords();
 const gameStarted = ref()
 const currentWord = ref()
-const usedCharacters = ref([])
-const config = useRuntimeConfig().public
+const usedCharacters = ref<string[]>([])
+const api = getHackmanApi()
+const lives = ref()
+const level = ref()
+const gameID = ref()
+
+const handleStart = async () => {
+    const resp = await api.gameStart({})
+    const decypt = decrypt('encryptionkey', resp.gameLevels[0].word.word)
+    console.log(decypt)
+    resp.gameLevels[0].word.word = decypt
+    currentWord.value = resp.gameLevels[0].word;
+    level.value = resp.gameLevels[0].word.level
+    gameID.value = resp.hash
+    lives.value = resp.lives
+}
+
+
+
+
+
+
 
 
 onMounted(() => {
-    if (!userStore.user || config.finished) {
-        router.push('/get-started')
-    }
+    handleStart()
 })
 
 const stickman = ref()
@@ -29,13 +46,17 @@ const countdownTimer = ref()
 const timer = ref()
 
 const handleStop = () => {
-    if(timer.value){
+    if (timer.value) {
         timer.value.stop()
     }
 }
 
-const handlePick = (char) => {
-    if(showLifeLost.value) return
+const startGame = () => {
+    gameStarted.value = true
+}
+
+const handlePick = (char: string) => {
+    if (showLifeLost.value) return
     usedCharacters.value.push(char)
     if (currentWord.value.word.indexOf(char) === -1) {
         guessesLeft.value -= 1
@@ -50,107 +71,97 @@ const handlePick = (char) => {
             }
         }
         if (currentWord.value.word.length === correct.value) {
-            handleWin()
+            levelUp()
         }
     }
 }
 
-const handleWin = () => {
-    if (userStore.level === 3) {
-        endGame()
-    } else {
-        userStore.level += 1
-        guessesLeft.value = 10
-        stickman.value.reset()
-        correct.value = 0
-        usedCharacters.value = []
-        currentWord.value = wordsStore.getWordForLevel(userStore.level)
-        levelUp()
-    }
-
-}
 
 const endGame = () => {
     handleStop();
-    api({
-        url: '/api/game-ended',
-        options: {
-            method: 'POST'
-        },
-        data: {
-            gameId: userStore.gameId,
-            lives: userStore.lives,
-            level: userStore.level
-        }
-    }).then((resp) => {
-        if(userStore.level === 3 && userStore.lives > 0){
-            showComplete.value = true
-        }
-    }).catch(() => {
-        showError({statusCode: 500, statusMessage: 'Error'})
-    })
 }
 
-const levelUp = () => {
-    api({
-        url: '/api/level-up',
-        options: {
-            method: 'POST'
-        },
-        data: {
-            gameId: userStore.gameId,
-            level: userStore.level
+const levelUp = async () => {
+    const resp = await api.gameLevelup(gameID.value, {})
+
+    if(resp.endDateTime){
+        if (timer.value) {
+            timer.value.stop()
         }
-    }).catch(() => {
-        showError({statusCode: 500, statusMessage: 'Error'})
-    })
+        showComplete.value = true
+    }
+    guessesLeft.value = 10
+    lives.value = resp.lives
+    correct.value = 0
+    usedCharacters.value = []
+    stickman.value.reset()
+    const maxLevel = Math.max(...resp.gameLevels.map(gl => gl.word.level))
+
+    const highestLevel = resp.gameLevels.find(gl => gl.word.level === maxLevel)
+    const decypt = decrypt('encryptionkey', highestLevel.word.word)
+    highestLevel.word.word = decypt
+    console.log(decypt)
+    currentWord.value = highestLevel.word
+    level.value = highestLevel.word.level
 }
 
 const showLifeLost = ref(false)
 
-const handleLooseLife = () => {
+const handleLooseLife = async () => {
     showLifeLost.value = true
-    api({
-        url: '/api/lost',
-        options: {
-            method: 'POST'
-        },
-        data: {
-            email: userStore.user.email,
-        }
-    }).then((resp) => {
-        userStore.lives = resp.lives
-        guessesLeft.value = 10
-        correct.value = 0
-        usedCharacters.value = []
-        stickman.value.reset()
+    const resp = await api.apiGamedieHashPut(gameID.value, {})
+    if(resp.lives === 0){
+        lives.value = resp.lives
+        handleStop()
+        return
+    }
 
-    })
-        .catch((error) => {
-            showError({statusCode: 500, statusMessage: 'Error'})
-        })
-        .finally(() => {
-            if (userStore.lives > 0) {
-                setTimeout(() => {
-                    showLifeLost.value = false
-                }, 2000)
-
-            }else {
-                handleStop()
-            }
-        })
+    guessesLeft.value = 10
+    lives.value = resp.lives
+    correct.value = 0
+    usedCharacters.value = []
+    stickman.value.reset()
+    showLifeLost.value = false
+    // api({
+    //     url: '/api/lost',
+    //     options: {
+    //         method: 'POST'
+    //     },
+    //     data: {
+    //         email: userStore.user.email,
+    //     }
+    // }).then((resp) => {
+    //     userStore.lives = resp.lives
+    //     guessesLeft.value = 10
+    //     correct.value = 0
+    //     usedCharacters.value = []
+    //     stickman.value.reset()
+    //
+    // })
+    //     .catch((error) => {
+    //         showError({statusCode: 500, statusMessage: 'Error'})
+    //     })
+    //     .finally(() => {
+    //         if (userStore.lives > 0) {
+    //             setTimeout(() => {
+    //                 showLifeLost.value = false
+    //             }, 2000)
+    //
+    //         }else {
+    //             handleStop()
+    //         }
+    //     })
 }
-
 const hintVisible = ref(false)
 
 const showHint = () => {
     hintVisible.value = true
 }
 
-const handleStart = () => {
-    currentWord.value = wordsStore.getWordForLevel(userStore.level)
-    gameStarted.value = true
-}
+// const handleStart = () => {
+//     currentWord.value = wordsStore.getWordForLevel(userStore.level)
+//     gameStarted.value = true
+// }
 
 const restart = () => {
     gameStarted.value = false
@@ -162,7 +173,7 @@ const restart = () => {
 
 <template>
     <div class="w-full flex flex-col h-full">
-        <countdown ref="countdownTimer" @start-game="handleStart" v-show="!gameStarted && userStore.user"/>
+        <countdown ref="countdownTimer" @start-game="startGame" v-show="!gameStarted"/>
         <template v-if="gameStarted">
             <Timer ref="timer"></Timer>
             <div class="w-full flex flex-col items-center">
@@ -174,8 +185,8 @@ const restart = () => {
                     <Stickman ref="stickman"/>
                 </div>
                 <div class="w-full flex flex-col items-center">
-                    <h1 class="text-4xl text-white">Level: {{ userStore.level }}</h1>
-                    <h1 class="text-4xl text-white mb-4">Lives Left: {{ userStore.lives }}</h1>
+                    <h1 class="text-4xl text-white">Level: {{ level }}</h1>
+                    <h1 class="text-4xl text-white mb-4">Lives Left: {{ lives }}</h1>
 
                     <Keyboard @select-char="handlePick" :used-characters="usedCharacters"/>
                     <div class="mt-8">
@@ -187,24 +198,27 @@ const restart = () => {
                 </div>
             </div>
         </template>
-        <div class="fixed flex justify-center items-center z-20 top-0 bottom-0 left-0 right-0 bg-neutral-800/80 text-light-50"
-             v-if="showLifeLost">
+        <div
+            class="fixed flex justify-center items-center z-20 top-0 bottom-0 left-0 right-0 bg-neutral-800/80 text-light-50"
+            v-if="showLifeLost">
             <div class="flex flex-col items-center justify-center">
-                <h1 class="text-4xl" v-if="userStore.lives > 0">You lost a life!</h1>
+                <h1 class="text-4xl" v-if="lives > 0">You lost a life!</h1>
                 <template v-else>
                     <h1 class="text-4xl mb-4">You're Dead!</h1>
                     <div class="flex justify-between space-x-4">
-                        <UButton label="Start new game" @click="restart"/>  <UButton label="Leaderboard" @click="router.push('/leaders')"/>
+                        <UButton label="Start new game" @click="restart"/>
+                        <UButton label="Leaderboard" @click="router.push('/leaders')"/>
                     </div>
 
                 </template>
             </div>
         </div>
-        <div class="fixed flex justify-center items-center z-20 top-0 bottom-0 left-0 right-0 bg-neutral-800/80 text-light-50"
-             v-if="showComplete">
+        <div
+            class="fixed flex justify-center items-center z-20 top-0 bottom-0 left-0 right-0 bg-neutral-800/80 text-light-50"
+            v-if="showComplete">
             <div class="flex flex-col items-center justify-center">
                 <h1 class="text-4xl mb-4">Well done! You're a Hacker!</h1>
-                <UButton label="Leaderboard" @click="router.push('/leaders')"/>
+                <UButton label="Back to lobby" @click="router.push('/lobby')"/>
             </div>
         </div>
     </div>
