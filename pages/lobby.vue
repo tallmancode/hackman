@@ -12,8 +12,6 @@ onMounted(async () => {
     const games = await api.userGames()
 
     userGames.value = games.member
-
-    console.log(userGames.value)
 })
 
 
@@ -25,15 +23,6 @@ function getTimeDifferenceInSeconds(start: string, end: string) {
     const diffInMilliseconds = (endDate - startDate);
     return Math.floor(diffInMilliseconds / 1000);
 }
-
-// const handleStart = async() => {
-//     const resp = await api.gameStart({})
-//     console.log(resp)
-//     const something = test(resp.gameLevels[0].word.word, resp.gameLevels[0].word.iv)
-// }
-
-//
-// const decryptedWord = decrypt('obTFH0F0Teg9hFC3ZpQP9TI/Ly03l+5jQWiEP2/w5ic=<ENC>', '2nbdrGhKLhE93pOIAvRtlysNr0z/UJco5LvKQmP5Lkw=!').toString(CryptoJS.enc.Utf8);
 </script>
 
 <template>

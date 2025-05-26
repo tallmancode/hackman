@@ -36,7 +36,7 @@ export const customAxios = async ({ url, method, ...config }) => {
                 try {
                     const {jwtToken, refreshToken} = getCookies() // Retrieve the stored refresh token.
 
-                    const resp = await axios.post(`${_publicConfig.public.baseUrl}/api/token/refresh`, {
+                    const resp = await axios.post(`${_publicConfig.public.baseUrl}api/token/refresh`, {
                         refresh_token: refreshToken,
                     });
 
@@ -47,7 +47,8 @@ export const customAxios = async ({ url, method, ...config }) => {
                     axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                     return axiosInstance(originalRequest); // Retry the original request with the new access token.
                 } catch (refreshError) {
-                   // window.location.href = '/login';
+                   setCookies(undefined, undefined)
+                   window.location.href = '/login';
                     return Promise.reject(refreshError);
                 }
             }

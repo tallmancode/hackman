@@ -113,7 +113,7 @@ const errors = ref()
                     </UFormField>
                     <div class="flex justify-between">
                         <UButton label="Register" size="lg" type="submit" :loading="loading"></UButton>
-                        <UButton label="Leaderboard" size="lg" type="button"></UButton>
+                        <UButton label="Login" size="lg" type="button" to="/login"></UButton>
                     </div>
                 </form>
             </div>

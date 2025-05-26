@@ -50,7 +50,7 @@ function getInvertedLetterFromAlphabetForLetter(letter, letterToChange) {
     const posLetter = abc.indexOf( letter );
 
     if (posLetter == -1) {
-        console.log('Password letter ' + letter + ' not allowed.');
+
         return null;
     }
 
@@ -62,7 +62,7 @@ function getInvertedLetterFromAlphabetForLetter(letter, letterToChange) {
     const posLetterToChange = newABC.indexOf( letterToChange );
 
     if (posLetterToChange == -1) {
-        console.log('Password letter ' + letter + ' not allowed.');
+
         return null;
     }
 

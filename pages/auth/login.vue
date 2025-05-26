@@ -21,6 +21,7 @@ const formData = ref({
 
 const handleSubmit = async () => {
     loading.value = true
+    errors.value = false
     try {
         const resp = await api.loginCheckPost(formData.value);
         if (resp?.token) {
@@ -30,8 +31,9 @@ const handleSubmit = async () => {
 
         }
     } catch (err) {
-        if (err.response && err.response.status === 422) {
-            errors.value = UseFormError(err.response.data);
+        if (err.response) {
+            errors.value = true
+            //errors.value = UseFormError(err.response.data);
         }
     }
     loading.value = false
@@ -68,12 +70,9 @@ const show = ref(false)
                 </UInput>
             </UFormField>
             <div class="flex justify-between">
-                <NuxtLink :to="{name: 'auth-register'}" class="text-sm text-light-100 dark:text-light-100">
+                <NuxtLink :to="{name: 'auth-register'}" class="text-md text-light-100 dark:text-light-100">
                     Don't have an account?
                     <span class="text-primary-300">Register</span>
-                </NuxtLink>
-                <NuxtLink :to="{name: 'auth-forgot-password'}" class="text-sm text-primary-300">
-                    Forgot Password
                 </NuxtLink>
             </div>
             <UButton color="primary" size="lg" type="submit"

@@ -19,20 +19,12 @@ const gameID = ref()
 const handleStart = async () => {
     const resp = await api.gameStart({})
     const decypt = decrypt('encryptionkey', resp.gameLevels[0].word.word)
-    console.log(decypt)
     resp.gameLevels[0].word.word = decypt
     currentWord.value = resp.gameLevels[0].word;
     level.value = resp.gameLevels[0].word.level
     gameID.value = resp.hash
     lives.value = resp.lives
 }
-
-
-
-
-
-
-
 
 onMounted(() => {
     handleStart()
@@ -100,7 +92,6 @@ const levelUp = async () => {
     const highestLevel = resp.gameLevels.find(gl => gl.word.level === maxLevel)
     const decypt = decrypt('encryptionkey', highestLevel.word.word)
     highestLevel.word.word = decypt
-    console.log(decypt)
     currentWord.value = highestLevel.word
     level.value = highestLevel.word.level
 }
