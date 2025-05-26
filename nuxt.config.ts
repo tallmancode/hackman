@@ -18,7 +18,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      baseUrl: 'https://hackman-server.tallmancode.co.za',
+      baseUrl: process.env.BASE_URL || 'https://hackman-server.tallmancode.co.za',
       finished: false
     }
   },
