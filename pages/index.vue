@@ -2,6 +2,7 @@
 const router = useRouter();
 definePageMeta({
     path: '/',
+    public: true
 })
 
 const loading = ref(false)
@@ -14,9 +15,13 @@ const loading = ref(false)
         <h1 class="uppercase text-2xl font-bold">Welcome to</h1>
         <h1 class="uppercase text-5xl font-bold">hackman</h1>
         <div class="mt-4">
-            <UButton label="Play Now" size="lg" :disabled="loading" :loading="loading" @click="() => {
+            <UButton label="Login" size="lg" :disabled="loading" :loading="loading" @click="() => {
                 loading = true
-                router.push('/get-started')
+                router.push('/login')
+            }"></UButton>
+            <UButton label="Register" size="lg" :disabled="loading" :loading="loading" @click="() => {
+                loading = true
+                router.push('/register')
             }"></UButton>
         </div>
     </div>

@@ -10,15 +10,17 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/ui": "^2.18.7",
-    "@nuxtjs/tailwindcss": "^6.12.1",
+    "@nuxt/ui": "^3.1.1",
     "@pinia/nuxt": "^0.5.5",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
-    "axios": "^1.4.0",
-    "nuxt": "^3.13.0",
+    "nuxt": "^3.17.3",
     "pinia": "^2.2.4",
+    "tailwindcss": "^4.1.7",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4"
   }
 }

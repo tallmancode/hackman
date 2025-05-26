@@ -1,6 +1,20 @@
 export default defineAppConfig({
     ui: {
-        primary: 'red',
-        light: 'light',
+        colors: {
+            primary: "red",
+            neutral: "light",
+        },
+        button: {
+            slots: {
+                base: ["cursor-pointer"],
+            },
+            compoundVariants: [
+                {
+                    color: "primary",
+                    variant: "solid",
+                    class: "text-light-50",
+                },
+            ],
+        },
     }
 })

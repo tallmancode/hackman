@@ -1,0 +1,53 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme static {
+	--font-sans: "Roboto", "sans-serif";
+	--font-serif: "Inter", "serif";
+
+	--color-red-50: #fff0f2;
+	--color-red-100: #ffdee1;
+	--color-red-200: #ffc3c9;
+	--color-red-300: #ff9aa4;
+	--color-red-400: #ff6070;
+	--color-red-500: #ff2f44;
+	--color-red-600: #ed0c23;
+	--color-red-700: #cd081c;
+	--color-red-800: #a90b1b;
+	--color-red-900: #8b111d;
+	--color-red-950: #4c030a;
+
+	--color-dark-50: #f6f6f6;
+	--color-dark-100: #e7e7e7;
+	--color-dark-200: #d1d1d1;
+	--color-dark-300: #b0b0b0;
+	--color-dark-400: #888888;
+	--color-dark-500: #6d6d6d;
+	--color-dark-600: #5d5d5d;
+	--color-dark-700: #535353;
+	--color-dark-800: #454545;
+	--color-dark-900: #3d3d3d;
+	--color-dark-950: #262626;
+
+	--color-light-50: #f7f7f7;
+	--color-light-100: #ededed;
+	--color-light-200: #dadada;
+	--color-light-300: #c8c8c8;
+	--color-light-400: #adadad;
+	--color-light-500: #999999;
+	--color-light-600: #888888;
+	--color-light-700: #7b7b7b;
+	--color-light-800: #676767;
+	--color-light-900: #545454;
+	--color-light-950: #363636;
+}
+
+page-enter-active,
+.page-leave-active {
+	transition: all 0.2s ease-in-out;
+}
+.page-enter-from,
+.page-leave-to {
+	opacity: 0;
+	filter: blur(1rem);
+}
