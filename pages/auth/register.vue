@@ -17,6 +17,7 @@ const formData = ref({
     lastName: '',
     email: '',
     password: '',
+    answer: ''
 })
 
 
@@ -102,6 +103,12 @@ const show = ref(false)
                                 class="w-full">
                         <UInput v-model="formData.email" type="email" placeholder="you@example.com"
                                 icon="i-mdi-email-outline"
+                                class="w-full"
+                                autocomplete="off"/>
+                    </UFormField>
+                    <UFormField label="New Password Length" name="answer" :error="typeof errors === 'object' && errors?.answer"
+                                class="w-full">
+                        <UInput v-model="formData.answer" type="number"
                                 class="w-full"
                                 autocomplete="off"/>
                     </UFormField>
