@@ -11,6 +11,7 @@
     "generate:api": "orval"
   },
   "dependencies": {
+    "@nuxt/image": "^1.10.0",
     "@nuxt/ui": "^3.1.1",
     "@pinia/nuxt": "^0.5.5",
     "@vuelidate/core": "^2.0.3",

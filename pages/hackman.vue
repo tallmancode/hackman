@@ -129,46 +129,12 @@ const handleLooseLife = async () => {
     usedCharacters.value = []
     stickman.value.reset()
     showLifeLost.value = false
-    // api({
-    //     url: '/api/lost',
-    //     options: {
-    //         method: 'POST'
-    //     },
-    //     data: {
-    //         email: userStore.user.email,
-    //     }
-    // }).then((resp) => {
-    //     userStore.lives = resp.lives
-    //     guessesLeft.value = 10
-    //     correct.value = 0
-    //     usedCharacters.value = []
-    //     stickman.value.reset()
-    //
-    // })
-    //     .catch((error) => {
-    //         showError({statusCode: 500, statusMessage: 'Error'})
-    //     })
-    //     .finally(() => {
-    //         if (userStore.lives > 0) {
-    //             setTimeout(() => {
-    //                 showLifeLost.value = false
-    //             }, 2000)
-    //
-    //         }else {
-    //             handleStop()
-    //         }
-    //     })
 }
 const hintVisible = ref(false)
 
 const showHint = () => {
     hintVisible.value = true
 }
-
-// const handleStart = () => {
-//     currentWord.value = wordsStore.getWordForLevel(userStore.level)
-//     gameStarted.value = true
-// }
 
 const restart = () => {
     gameStarted.value = false

@@ -19,9 +19,6 @@ export const customAxios = async ({ url, method, ...config }) => {
         const {jwtToken, refreshToken} = getCookies()
         if (jwtToken) {
             config.headers.Authorization = `Bearer ${jwtToken}`;
-        }else{
-            const router = useRouter()
-           // router.push("/login");
         }
         config.headers["Content-Type"] = "application/json";
         return config;
@@ -44,7 +41,7 @@ export const customAxios = async ({ url, method, ...config }) => {
 
                     setCookies(token, newRefreshToken)
 
-                    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                    axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
                     return axiosInstance(originalRequest); // Retry the original request with the new access token.
                 } catch (refreshError) {
                    setCookies(undefined, undefined)

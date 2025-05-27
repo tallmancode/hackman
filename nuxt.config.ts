@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   css: ["@/assets/app.css"],
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", '@pinia/nuxt'],
+  modules: ["@nuxt/ui", '@pinia/nuxt', '@nuxt/image'],
   ssr: false,
   app: {
     pageTransition: {name: 'page', mode: 'out-in'},
@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     families: [
       // only resolve this font with the `google` provider
       { name: "Roboto", provider: "google" },
-      { name: "Inter", provider: "google" },
+      { name: "Share Tech Mono", provider: "google" },
     ],
   },
   runtimeConfig: {

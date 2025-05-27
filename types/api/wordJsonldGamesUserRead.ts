@@ -12,6 +12,7 @@ export interface WordJsonldGamesUserRead {
   readonly '@context'?: WordJsonldGamesUserReadContext;
   readonly '@id'?: string;
   readonly '@type'?: string;
+  readonly id?: number;
   word?: string;
   level?: number;
   hint?: string;

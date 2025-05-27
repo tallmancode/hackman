@@ -8,6 +8,7 @@
 import type { WordGamesUserReadIv } from './wordGamesUserReadIv';
 
 export interface WordGamesUserRead {
+  readonly id?: number;
   word?: string;
   level?: number;
   hint?: string;

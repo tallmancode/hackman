@@ -47,14 +47,18 @@ const handleSubmit = async () => {
 }
 
 const errors = ref()
-
+const show = ref(false)
 </script>
 
 <template>
-    <div class="h-full w-full bg-dark-800/70 text-white ">
-        <div class="flex container w-full mx-auto h-full items-center">
+    <div class="h-full w-full flex flex-col justify-center bg-dark-900/60 text-light-50">
+        <div class="w-full flex items-center justify-center">
+            <NuxtImg src="/logo.png"></NuxtImg>
+        </div>
+        <div class="flex container w-full mx-auto items-center">
             <div class="w-full flex flex-col items-center justify-center">
                 <div class="max-w-[400px]">
+
                     <h1 class="text-center text-xl font-bold mb-8">Your mission should you choose to accept, is to hack
                         the passwords as quickly as possible.</h1>
                     <USeparator label="Hot To Play"/>
@@ -80,12 +84,6 @@ const errors = ref()
                     </div>
                 </div>
             </div>
-            <!--            <div class="w-full flex flex-col items-center justify-center" v-if="config.finished">-->
-            <!--                <h1 class="text-4xl mb-4">Hackman Is Finished</h1>-->
-            <!--                <div class="flex justify-center">-->
-            <!--                    <UButton label="Leaderboard" size="lg" type="button"  @click="router.push('/leaders')" ></UButton>-->
-            <!--                </div>-->
-            <!--            </div>-->
             <div class="flex flex-col h-full w-full items-center justify-center relative">
                 <h1 class="uppercase text-2xl mb-4">Create A Account</h1>
                 <form @submit.prevent="handleSubmit()" class="flex flex-col space-y-2 relative z-10 min-w-[350px]">
@@ -106,14 +104,26 @@ const errors = ref()
                                 class="w-full"
                                 autocomplete="off"/>
                     </UFormField>
-
-                    <UFormField label="Password" name="password" :error="typeof errors === 'object' && errors?.password"
-                                class="w-full">
-                        <UInput v-model="formData.password" type="password" autocomplete="off" class="w-full"/>
+                    <UFormField label="Password" name="password" class="w-full" :error="typeof errors === 'object' && errors?.password">
+                        <UInput v-model="formData.password" :type="show ? 'text' : 'password'"
+                                :ui="{ trailing: 'pe-1' }" class="w-full">
+                            <template #trailing>
+                                <UButton
+                                    color="neutral"
+                                    variant="link"
+                                    size="sm"
+                                    :icon="show ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                                    :aria-label="show ? 'Hide password' : 'Show password'"
+                                    :aria-pressed="show"
+                                    aria-controls="password"
+                                    @click="show = !show"
+                                />
+                            </template>
+                        </UInput>
                     </UFormField>
                     <div class="flex justify-between">
-                        <UButton label="Register" size="lg" type="submit" :loading="loading"></UButton>
-                        <UButton label="Login" size="lg" type="button" to="/login"></UButton>
+                        <UButton label="Register" size="lg" type="submit" :loading="loading" :disabled="loading"></UButton>
+                        <UButton label="Login" size="lg" type="button" to="/login" :disabled="loading"></UButton>
                     </div>
                 </form>
             </div>

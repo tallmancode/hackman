@@ -8,6 +8,7 @@
 import type { WordGameReadIv } from './wordGameReadIv';
 
 export interface WordGameRead {
+  readonly id?: number;
   word?: string;
   level?: number;
   hint?: string;

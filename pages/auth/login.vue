@@ -43,8 +43,11 @@ const show = ref(false)
 </script>
 
 <template>
-    <div class="flex h-full w-full items-center justify-center relative">
-        <form @submit.prevent="handleSubmit()" class="flex flex-col space-y-2 relative z-10 min-w-[350px]">
+    <div class="flex flex-col h-full w-full items-center justify-center relative bg-dark-900/60 text-light-50">
+        <div>
+            <NuxtImg src="/logo.png"></NuxtImg>
+        </div>
+        <form @submit.prevent="handleSubmit()" class="flex flex-col space-y-2 relative z-10 min-w-[350px] ">
             <USeparator label="Log in"
                       :ui="{ label: 'text-xl text-dark-800 dark:text-light-100', border: {base: 'dark:border-light-100'} }"
                       class="mb-4 select-none"/>
@@ -77,7 +80,6 @@ const show = ref(false)
             </div>
             <UButton color="primary" size="lg" type="submit"
                      :loading="loading"
-                     :ui="{variant: {solid: 'dark:text-light-50 text-light-50'}}"
                      class="w-full justify-center md:w-auto">
                 Get Hacking
             </UButton>
