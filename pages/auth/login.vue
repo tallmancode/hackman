@@ -13,7 +13,6 @@ definePageMeta({
 
 const errors = ref()
 const loading = ref(false)
-// const {loading, login, errors} = loginUser()
 const formData = ref({
     username: '',
     password: ''
@@ -30,10 +29,9 @@ const handleSubmit = async () => {
             })
 
         }
-    } catch (err) {
-        if (err.response) {
-            errors.value = true
-            //errors.value = UseFormError(err.response.data);
+    } catch (err: AxiosError) {
+        if (err?.response && err?.response.status === 401) {
+            errors.value = err?.response.data.message
         }
     }
     loading.value = false
@@ -51,7 +49,7 @@ const show = ref(false)
             <USeparator label="Log in"
                       :ui="{ label: 'text-xl text-dark-800 dark:text-light-100', border: {base: 'dark:border-light-100'} }"
                       class="mb-4 select-none"/>
-            <UFormField label="Email" name="email" :error="errors ? 'Incorrect Email or Password' : false" class="w-full">
+            <UFormField label="Email" name="email" :error="errors ? errors : false" class="w-full">
                 <UInput v-model="formData.username" type="email" class="w-full"/>
             </UFormField>
 

@@ -3,8 +3,8 @@ import type { AxiosError } from "axios";
 import {getHackmanApi} from "~/api-client";
 import UseFormError from "~/composables/UseFormError";
 
-const router = useRouter()
 const api = getHackmanApi()
+const userCreate = ref(false)
 definePageMeta({
     path: "/register",
     public: true
@@ -26,17 +26,18 @@ const handleSubmit = async () => {
         const resp = await api.registerUser(formData.value)
         // const resp = await $api.auth.register(formData.value);
         if (resp) {
-            const jwtToken = useCookie('jwtToken', {
-                maxAge: 3600, // Set the cookie to expire in 3600 seconds (1 hour)
-            }); // Coo
-
-            const refreshToken = useCookie('refreshToken', {
-                maxAge: 604800, // Set the cookie to expire in 3600 seconds (1 hour)
-            });
-
-            jwtToken.value = resp.token;
-            refreshToken.value = resp.refresh_token;// Cookie for JWT
-            router.push("/lobby");
+            userCreate.value = true
+            // const jwtToken = useCookie('jwtToken', {
+            //     maxAge: 3600, // Set the cookie to expire in 3600 seconds (1 hour)
+            // }); // Coo
+            //
+            // const refreshToken = useCookie('refreshToken', {
+            //     maxAge: 604800, // Set the cookie to expire in 3600 seconds (1 hour)
+            // });
+            //
+            // jwtToken.value = resp.token;
+            // refreshToken.value = resp.refresh_token;// Cookie for JWT
+            // router.push("/lobby");
         }
     } catch (err: AxiosError) {
         if (err.response && err.response.status === 422) {
@@ -84,7 +85,7 @@ const show = ref(false)
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col h-full w-full items-center justify-center relative">
+            <div class="flex flex-col h-full w-full items-center justify-center relative" v-if="!userCreate">
                 <h1 class="uppercase text-2xl mb-4">Create A Account</h1>
                 <form @submit.prevent="handleSubmit()" class="flex flex-col space-y-2 relative z-10 min-w-[350px]">
                     <div class="flex space-x-4">
@@ -127,7 +128,10 @@ const show = ref(false)
                     </div>
                 </form>
             </div>
-
+            <div class="flex flex-col h-full w-full items-center justify-center relative" v-else>
+                <h1 class="uppercase text-2xl mb-4">Account Created Successfully</h1>
+                <p>Please check your email to verify your account</p>
+            </div>
         </div>
     </div>
 </template>
