@@ -45,7 +45,7 @@ export const customAxios = async ({url, method, ...config}) => {
                     return axiosInstance(originalRequest); // Retry the original request with the new access token.
                 } catch (refreshError) {
                     setCookies(undefined, undefined)
-                    window.location.href = '/login';
+                   // window.location.href = '/login';
                     return Promise.reject(refreshError);
                 }
             }
