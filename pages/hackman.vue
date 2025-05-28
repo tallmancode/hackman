@@ -68,6 +68,7 @@ const handlePick = (char: string) => {
     if (showLifeLost.value) return
     usedCharacters.value.push(char)
     if (currentWord.value.word.indexOf(char) === -1) {
+        console.log()
         guessesLeft.value -= 1
         stickman.value.animate(guessesLeft.value)
         if (guessesLeft.value === 0) {
@@ -174,8 +175,9 @@ const restart = () => {
                         <Stickman ref="stickman"/>
                     </div>
                     <div class="w-full flex flex-col items-center">
-                        <h1 class="text-4xl text-white">Level: {{ level }}</h1>
-                        <h1 class="text-4xl text-white mb-4">Lives Left: {{ lives }}</h1>
+                        <h1 class="text-3xl md:text-4xl text-white">Level: {{ level }}</h1>
+                        <h1 class="text-3xl md:text-4xl md:mb-4  text-white">Lives Left: {{ lives }}</h1>
+                        <h1 class="text-3xl md:text-4xl md:hidden  text-white mb-4">Guesses Left: {{guessesLeft}}</h1>
 
                         <Keyboard @select-char="handlePick" :used-characters="usedCharacters"/>
                         <div class="mt-8">
@@ -211,8 +213,8 @@ const restart = () => {
                 </div>
             </div>
         </template>
-        <div v-if="retriesDone" class="h-full w-full flex flex-col justify-center items-center bg-dark-950/90">
-            <h1 class="text-3xl mb-4">You have reached the maximum number of retries</h1>
+        <div v-if="retriesDone" class="h-full w-full flex flex-col justify-center items-center ">
+            <h1 class="text-3xl mb-4 text-center">You have reached the maximum number of retries</h1>
             <div class="w-full container  mx-auto flex space-x-4 justify-center items-center">
                 <UButton color="primary" size="lg" to="/lobby"
                          class="w-full justify-center md:w-auto">
