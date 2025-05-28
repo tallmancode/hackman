@@ -1,5 +1,3 @@
-// utils/axios-instance.ts
-import {useNuxtApp} from '#app'
 import type {RuntimeConfig} from "nuxt/schema";
 import axios from "axios";
 import {getCookies, setCookies} from "~/composables/useAuth";

@@ -29,7 +29,7 @@ function getTimeDifferenceInSeconds(start, end) {
 </script>
 
 <template>
-    <div class="h-full w-full bg-neutral-800/70 text-white ">
+    <div class="h-full w-full  text-white ">
         <div class="flex flex-col container w-full mx-auto h-full items-center justify-center text-center">
             <h1 class="text-4xl mb-4">Leaderboard</h1>
             <div class="grid grid-cols-4 w-[750px] text-pink-500 text-xl font-bold">

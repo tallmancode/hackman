@@ -12,8 +12,8 @@ const wordObj = computed(() => {
 </script>
 
 <template>
-<div class="flex gap-4 mb-8">
-    <div v-for="obj in wordObj"  class="border-b border-white w-[25px] h-[55px] text-white  flex items-center justify-center pb-1 text-4xl">
+<div class="flex flex-wrap justify-center  gap-4 mb-8">
+    <div v-for="obj in wordObj"  class="border-b border-white w-[15px] h-[30px] md:w-[25px] md:h-[55px] text-white  flex items-center justify-center pb-1 text-2xl md:text-4xl">
         <template v-if="obj.used">
            {{ obj.char }}
         </template>

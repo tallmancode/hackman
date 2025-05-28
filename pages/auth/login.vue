@@ -41,7 +41,7 @@ const show = ref(false)
 </script>
 
 <template>
-    <div class="flex flex-col h-full w-full items-center justify-center relative bg-dark-900/60 text-light-50">
+    <div class="flex flex-col h-full w-full items-center justify-center relative  text-light-50">
         <div>
             <NuxtImg src="/logo.png"></NuxtImg>
         </div>

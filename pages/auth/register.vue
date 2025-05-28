@@ -25,20 +25,8 @@ const handleSubmit = async () => {
     loading.value = true
     try {
         const resp = await api.registerUser(formData.value)
-        // const resp = await $api.auth.register(formData.value);
         if (resp) {
             userCreate.value = true
-            // const jwtToken = useCookie('jwtToken', {
-            //     maxAge: 3600, // Set the cookie to expire in 3600 seconds (1 hour)
-            // }); // Coo
-            //
-            // const refreshToken = useCookie('refreshToken', {
-            //     maxAge: 604800, // Set the cookie to expire in 3600 seconds (1 hour)
-            // });
-            //
-            // jwtToken.value = resp.token;
-            // refreshToken.value = resp.refresh_token;// Cookie for JWT
-            // router.push("/lobby");
         }
     } catch (err: AxiosError) {
         if (err.response && err.response.status === 422) {
@@ -53,19 +41,20 @@ const show = ref(false)
 </script>
 
 <template>
-    <div class="h-full w-full flex flex-col justify-center bg-dark-900/60 text-light-50">
+    <div class="md:h-full w-full flex flex-col justify-center  text-light-50">
         <div class="w-full flex items-center justify-center">
             <NuxtImg src="/logo.png"></NuxtImg>
         </div>
-        <div class="flex container w-full mx-auto items-center">
+        <div class="flex-col md:flex-row flex container w-full mx-auto items-center">
             <div class="w-full flex flex-col items-center justify-center">
                 <div class="max-w-[400px]">
-
-                    <h1 class="text-center text-xl font-bold mb-8">Your mission should you choose to accept, is to hack
-                        the passwords as quickly as possible.</h1>
-                    <USeparator label="Hot To Play"/>
+                    <h1 class="text-center text-xl font-bold mb-8">Operation Firewall: Crack the Code</h1>
+                    <USeparator label="How To Play" />
                     <div class="mt-4 text-light-300">
                         <ul class="list-disc">
+                            <li class="mb-2">
+                                You only have 3 chances to attempt the hack.
+                            </li>
                             <li class="mb-2">
                                 You will have 3 passwords to hack.
                             </li>
@@ -77,10 +66,10 @@ const show = ref(false)
                             </li>
                             <li class="mb-2">
                                 You will need to attempt the hack in a single session! If you refresh your browser you
-                                will loose a life.
+                                will loose a chance.
                             </li>
                             <li class="mb-2">
-                                Once you have lost all 3 lives you will not be able to attempt the hack again.
+                                Once you have used all 3 chances you will not be able to attempt the hack again.
                             </li>
                         </ul>
                     </div>
@@ -106,12 +95,7 @@ const show = ref(false)
                                 class="w-full"
                                 autocomplete="off"/>
                     </UFormField>
-                    <UFormField label="New Password Length" name="answer" :error="typeof errors === 'object' && errors?.answer"
-                                class="w-full">
-                        <UInput v-model="formData.answer" type="number"
-                                class="w-full"
-                                autocomplete="off"/>
-                    </UFormField>
+
                     <UFormField label="Password" name="password" class="w-full" :error="typeof errors === 'object' && errors?.password">
                         <UInput v-model="formData.password" :type="show ? 'text' : 'password'"
                                 :ui="{ trailing: 'pe-1' }" class="w-full">
@@ -129,7 +113,15 @@ const show = ref(false)
                             </template>
                         </UInput>
                     </UFormField>
-                    <div class="flex justify-between">
+                    <p class="max-w-[350px] text-center">According to the updated password policy, what is the minimum length a password must be?</p>
+                    <UFormField name="answer" :error="typeof errors === 'object' && errors?.answer"
+                                class="w-full">
+                        <UInput v-model="formData.answer" type="number"
+                                class="w-full"
+                                placeholder="Answer"
+                                autocomplete="off"/>
+                    </UFormField>
+                    <div class="flex justify-between mt-4">
                         <UButton label="Register" size="lg" type="submit" :loading="loading" :disabled="loading"></UButton>
                         <UButton label="Login" size="lg" type="button" to="/login" :disabled="loading"></UButton>
                     </div>

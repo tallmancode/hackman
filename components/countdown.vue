@@ -4,12 +4,10 @@ import {useUser} from "~/store/user";
 
 const time = ref(3)
 const timer = ref()
-const router = useRouter()
-const userStore = useUser();
 
 const emit = defineEmits<{
     (
-        event: 'startGame', value: undefined
+        event: 'startGame'
     ): void
 }>()
 
@@ -34,43 +32,18 @@ const startNewGame = () => {
 
 defineExpose({startNewGame})
 
-
-// const handleBegin = () => {
-//     if(!userStore.user) return
-//     api({
-//         url: '/api/start',
-//         options: {
-//             method: 'POST'
-//         },
-//         data: {
-//             email: userStore.user.email
-//         }
-//     }).then((resp) => {
-//         userStore.level = resp.level
-//         userStore.lives = resp.lives
-//         userStore.gameId = resp.gameId
-//         userStore.gameStart = resp.start
-//         emit('startGame',resp.start )
-//     })
-//         .catch((error) => {
-//             showError({statusCode: 500, statusMessage: 'Error'})
-//         })
-//         .finally(() => {
-//         })
-// }
 </script>
 
 <template>
     <div class="flex flex-col items-center justify-center h-dvh w-full text-white">
-        <div class="h-[500px] w-[500px] rounded-full bg-neutral-800/80 flex flex-col items-center justify-center">
-            <h1 class="text-5xl">Ready Player One</h1>
-            <div class="text-9xl">
+        <div class="relative overflow-hidden h-[calc(100vw-100px)] w-[calc(100vw-100px)] md:h-[500px] md:w-[500px] rounded-full  flex flex-col items-center justify-center bg-cover bg-[url(/public/test-pattern.jpg)]">
+            <h1 class="text-2xl md:text-5xl z-10">Ready Hacker</h1>
+            <div class="text-9xl z-10">
                 {{ time }}
             </div>
+            <div class="bg-dark-950/70 absolute top-0 bottom-0 left-0 right-0"></div>
         </div>
     </div>
-
-
 </template>
 
 <style scoped>

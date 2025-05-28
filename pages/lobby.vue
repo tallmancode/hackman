@@ -29,19 +29,21 @@ function getTimeDifferenceInSeconds(start: string, end: string) {
 </script>
 
 <template>
- <div class="flex h-full bg-dark-900/60 text-light-50">
+ <div class="flex-col md:flex-row flex h-full  text-light-50">
      <div class="flex container flex-col h-full w-full mx-auto items-center justify-center">
          <div class="max-w-[200px]">
              <NuxtImg src="/logo.png"></NuxtImg>
          </div>
-         <div class="flex container w-full mx-auto items-center">
+         <div class="flex-col md:flex-row mb-4 flex container w-full mx-auto items-center">
              <div class="w-full flex flex-col items-center justify-center">
                  <div class="max-w-[400px]">
-                     <h1 class="text-center text-xl font-bold mb-8">Your mission should you choose to accept, is to hack
-                         the passwords as quickly as possible.</h1>
-                     <USeparator label="Hot To Play" />
+                     <h1 class="text-center text-xl font-bold mb-8">Operation Firewall: Crack the Code</h1>
+                     <USeparator label="How To Play" />
                      <div class="mt-4 text-light-300">
                          <ul class="list-disc">
+                             <li class="mb-2">
+                                 You only have 3 chances to attempt the hack.
+                             </li>
                              <li class="mb-2">
                                  You will have 3 passwords to hack.
                              </li>
@@ -53,10 +55,10 @@ function getTimeDifferenceInSeconds(start: string, end: string) {
                              </li>
                              <li class="mb-2">
                                  You will need to attempt the hack in a single session! If you refresh your browser you
-                                 will loose a life.
+                                 will loose a chance.
                              </li>
                              <li class="mb-2">
-                                 Once you have lost all 3 lives you will not be able to attempt the hack again.
+                                 Once you have used all 3 chances you will not be able to attempt the hack again.
                              </li>
                          </ul>
                      </div>

@@ -8,7 +8,7 @@ definePageMeta({
 </script>
 
 <template>
-<div class="h-full w-full bg-dark-900/60 text-light-50">
+<div class="h-full w-full  text-light-50">
     <div class="flex flex-col w-full h-full items-center justify-center max-w-[350px] mx-auto">
         <div>
             <NuxtImg src="/logo.png"></NuxtImg>
