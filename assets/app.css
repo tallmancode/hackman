@@ -42,7 +42,7 @@
 	--color-light-950: #363636;
 }
 
-page-enter-active,
+.page-enter-active,
 .page-leave-active {
 	transition: all 0.2s ease-in-out;
 }
