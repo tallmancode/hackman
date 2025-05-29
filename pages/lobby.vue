@@ -83,7 +83,7 @@ function getTimeDifferenceInSeconds(start: string, end: string) {
                          </div>
                          <template v-for="(game, index) in userGames" :key="index">
                              <div class="w-[200px]">
-                                 {{getTimeDifferenceInSeconds(game?.startDateTime as string, game?.endDateTime as string)}} sec
+                                 {{game?.endDateTime ? getTimeDifferenceInSeconds(game?.startDateTime as string, game?.endDateTime as string)+ ' sec' : 'Not Completed'}}
                              </div>
                              <div>
                                  {{game?.lives}}
