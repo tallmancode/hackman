@@ -48,7 +48,7 @@ const endCheck = () => {
                 <div>Rank</div>
                 <div>Player</div>
                 <div>Time Taken</div>
-                <div>Level</div>
+                <div>Lives</div>
             </div>
             <div v-for="(leader, index) in leaders" class="grid grid-cols-4 w-[750px] text-lg">
                 <div>{{ index + 1 }}</div>
