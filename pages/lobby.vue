@@ -26,6 +26,8 @@ function getTimeDifferenceInSeconds(start: string, end: string) {
     const diffInMilliseconds = (endDate - startDate);
     return Math.floor(diffInMilliseconds / 1000);
 }
+
+
 </script>
 
 <template>

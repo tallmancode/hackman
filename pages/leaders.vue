@@ -26,11 +26,23 @@ function getTimeDifferenceInSeconds(start, end) {
     return diffInSeconds;
 }
 
+const endCheck = () => {
+    const now = new Date();
+    const formatter = new Intl.DateTimeFormat('en-ZA', { timeZone: 'Africa/Johannesburg', timeStyle: "short", dateStyle: 'short' });
+    const date = formatter.format(now)
+    const publicConfig = useRuntimeConfig();
+    if(Date.parse(publicConfig.public.endtime) <= Date.parse(date)){
+        return true
+    }
+    return false
+}
+
 </script>
 
 <template>
     <div class="h-full w-full  text-white ">
         <div class="flex flex-col container w-full mx-auto h-full items-center justify-center text-center">
+            <p v-if="endCheck()">Hackman has ended</p>
             <h1 class="text-4xl mb-4">Leaderboard</h1>
             <div class="grid grid-cols-4 w-[750px] text-pink-500 text-xl font-bold">
                 <div>Rank</div>
@@ -46,7 +58,7 @@ function getTimeDifferenceInSeconds(start, end) {
                 </div>
                 <div >{{leader.lives}}</div>
             </div>
-            <div class="mt-8">
+            <div class="mt-8" v-if="!endCheck()">
                 <UButton label="Play Now" size="lg" type="button"  to="/lobby"></UButton>
             </div>
         </div>

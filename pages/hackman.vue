@@ -52,6 +52,7 @@ const correct = ref(0)
 const showComplete = ref(false)
 const countdownTimer = ref()
 const timer = ref()
+const levelLoading = ref(false)
 
 
 const handleStop = () => {
@@ -68,7 +69,6 @@ const handlePick = (char: string) => {
     if (showLifeLost.value) return
     usedCharacters.value.push(char)
     if (currentWord.value.word.indexOf(char) === -1) {
-        console.log()
         guessesLeft.value -= 1
         stickman.value.animate(guessesLeft.value)
         if (guessesLeft.value === 0) {
@@ -92,6 +92,7 @@ const endGame = () => {
 
 const levelUp = async () => {
     try {
+        levelLoading.value = true
         const resp = await api.gameLevelup(gameID.value, {
             wordId: currentWord.value['@id'],
             answer: currentWord.value.word
@@ -115,6 +116,7 @@ const levelUp = async () => {
         highestLevel.word.word = decypt
         currentWord.value = highestLevel.word
         level.value = highestLevel.word.level
+        levelLoading.value = false
     } catch (err: AxiosError) {
         if (err?.response?.status === 400) {
             setCookies(undefined, undefined)
@@ -189,6 +191,13 @@ const restart = () => {
                     </div>
                 </div>
             </template>
+            <div
+                class="fixed flex justify-center items-center z-20 top-0 bottom-0 left-0 right-0 bg-neutral-800/80 text-light-50"
+                v-if="levelLoading">
+                <div class="flex flex-col items-center justify-center">
+                    <h1 class="text-4xl" v-if="lives > 0">Level Up!</h1>
+                </div>
+            </div>
             <div
                 class="fixed flex justify-center items-center z-20 top-0 bottom-0 left-0 right-0 bg-neutral-800/80 text-light-50"
                 v-if="showLifeLost">
