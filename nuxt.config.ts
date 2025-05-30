@@ -44,7 +44,7 @@ export default defineNuxtConfig({
         public: {
             baseUrl: process.env.BASE_URL || 'https://hackman-server.tallmancode.co.za',
             finished: false,
-            endtime: '2025/05/30, 07:35'
+            endtime: '2025/05/30, 14:00'
         }
     },
     vite: {
