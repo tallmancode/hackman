@@ -154,9 +154,10 @@ const showHint = () => {
 }
 
 const restart = () => {
-    gameStarted.value = false
-    showLifeLost.value = false
-    countdownTimer.value.startNewGame()
+    // gameStarted.value = false
+    // showLifeLost.value = false
+    // countdownTimer.value.startNewGame()
+    window.location.reload()
 }
 
 </script>
