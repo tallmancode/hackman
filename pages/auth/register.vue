@@ -17,14 +17,20 @@ const formData = ref({
     lastName: '',
     email: '',
     password: '',
-    answer: ''
+    confirmPassword: ''
 })
 
 
 const handleSubmit = async () => {
+    if (formData.value.confirmPassword !== formData.value.password) {
+        confirmPasswordError.value = 'Passwords do not match'
+        return
+    }
+    confirmPasswordError.value = ''
     loading.value = true
     try {
-        const resp = await api.registerUser(formData.value)
+        const { confirmPassword, ...payload } = formData.value
+        const resp = await api.registerUser(payload)
         if (resp) {
             userCreate.value = true
         }
@@ -38,6 +44,8 @@ const handleSubmit = async () => {
 
 const errors = ref()
 const show = ref(false)
+const showConfirm = ref(false)
+const confirmPasswordError = ref('')
 </script>
 
 <template>
@@ -91,7 +99,7 @@ const show = ref(false)
                     <UFormField label="Email" name="email" :error="typeof errors === 'object' && errors?.email"
                                 class="w-full">
                         <UInput v-model="formData.email" type="email" placeholder="you@example.com"
-                                icon="i-mdi-email-outline"
+                                icon="i-lucide-pencil"
                                 class="w-full"
                                 autocomplete="off"/>
                     </UFormField>
@@ -113,13 +121,22 @@ const show = ref(false)
                             </template>
                         </UInput>
                     </UFormField>
-                    <p class="max-w-[350px] text-center">According to the updated password policy, what is the minimum length a password must be?</p>
-                    <UFormField name="answer" :error="typeof errors === 'object' && errors?.answer"
-                                class="w-full">
-                        <UInput v-model="formData.answer" type="number"
-                                class="w-full"
-                                placeholder="Answer"
-                                autocomplete="off"/>
+                    <UFormField label="Confirm Password" name="confirmPassword" class="w-full" :error="confirmPasswordError">
+                        <UInput v-model="formData.confirmPassword" :type="showConfirm ? 'text' : 'password'"
+                                :ui="{ trailing: 'pe-1' }" class="w-full">
+                            <template #trailing>
+                                <UButton
+                                    color="neutral"
+                                    variant="link"
+                                    size="sm"
+                                    :icon="showConfirm ? 'i-mdi-eye-off' : 'i-mdi-eye'"
+                                    :aria-label="showConfirm ? 'Hide password' : 'Show password'"
+                                    :aria-pressed="showConfirm"
+                                    aria-controls="confirmPassword"
+                                    @click="showConfirm = !showConfirm"
+                                />
+                            </template>
+                        </UInput>
                     </UFormField>
                     <div class="flex justify-between mt-4">
                         <UButton label="Register" size="lg" type="submit" :loading="loading" :disabled="loading"></UButton>

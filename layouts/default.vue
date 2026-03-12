@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import secBg from './public/sec-bg.webp';
+import secBg from '/sec-bg.webp';
 </script>
 
 <template>
