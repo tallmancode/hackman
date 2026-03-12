@@ -6,7 +6,7 @@
       "env": {
         "NODE_ENV": "production",
         "PORT": 5666,
-        "NUXT_PUBLIC_BASE_URL": "https://hackman-server.tallmancode.co.za"
+        "NUXT_API_BASE_URL": "https://hackman-server.tallmancode.co.za"
       }
     }
   ]

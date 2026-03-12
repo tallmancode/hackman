@@ -1,20 +1,17 @@
-import type {RuntimeConfig} from "nuxt/schema";
 import axios from "axios";
 import {getCookies, setCookies} from "~/composables/useAuth";
 
 export const customAxios = async ({url, method, ...config}) => {
-    const _publicConfig: RuntimeConfig = useRuntimeConfig();
-
     const axiosInstance = axios.create({
         headers: {
             Accept: "*/*",
             "Content-Type": "application/json",
         },
-        baseURL: _publicConfig.public.baseUrl,
+        baseURL: '',
     });
 
     axiosInstance.interceptors.request.use((config) => {
-        const {jwtToken, refreshToken} = getCookies()
+        const {jwtToken} = getCookies()
         if (jwtToken) {
             config.headers.Authorization = `Bearer ${jwtToken}`;
         }
@@ -23,15 +20,15 @@ export const customAxios = async ({url, method, ...config}) => {
     });
 
     axiosInstance.interceptors.response.use(
-        response => response, // Directly return successful responses.
+        response => response,
         async error => {
             const originalRequest = error.config;
             if (error.response.status === 401 && !originalRequest._retry && originalRequest.url !== "/api/login") {
-                originalRequest._retry = true; // Mark the request as retried to avoid infinite loops.
+                originalRequest._retry = true;
                 try {
-                    const {jwtToken, refreshToken} = getCookies() // Retrieve the stored refresh token.
+                    const {refreshToken} = getCookies()
 
-                    const resp = await axios.post(`${_publicConfig.public.baseUrl}/api/token/refresh`, {
+                    const resp = await axios.post('/api/token/refresh', {
                         refresh_token: refreshToken,
                     });
 
@@ -40,14 +37,14 @@ export const customAxios = async ({url, method, ...config}) => {
                     setCookies(token, newRefreshToken)
 
                     axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
-                    return axiosInstance(originalRequest); // Retry the original request with the new access token.
+                    return axiosInstance(originalRequest);
                 } catch (refreshError) {
                     setCookies(undefined, undefined)
-                   window.location.href = '/login';
+                    window.location.href = '/login';
                     return Promise.reject(refreshError);
                 }
             }
-            return Promise.reject(error); // For all other errors, return the error as is.
+            return Promise.reject(error);
         }
     );
 
@@ -56,7 +53,6 @@ export const customAxios = async ({url, method, ...config}) => {
         method,
         ...config,
     })
-
 
     // Unwrap hydra:member for collections
     if (response?.data?.['hydra:member']) {

@@ -41,8 +41,8 @@ export default defineNuxtConfig({
         layoutTransition: {name: 'page', mode: 'out-in'},
     },
     runtimeConfig: {
+        apiBaseUrl: process.env.NUXT_API_BASE_URL || 'https://hackman-server.tallmancode.co.za',
         public: {
-            baseUrl: process.env.BASE_URL || 'https://hackman-server.tallmancode.co.za',
             finished: false,
             endtime: '2025/05/30, 14:00'
         }

@@ -16,6 +16,9 @@ onMounted(async () => {
     loading.value = false
 })
 
+
+
+
 function getTimeDifferenceInSeconds(start, end) {
     const startDate = new Date(start);
     const endDate = new Date(end);
